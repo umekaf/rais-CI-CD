@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+  railsdb:
+    image: postgres:13.6
+    restart: always
+    environment:
+      POSTGRES_USER: umeshkafle
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - data0:/usr/shared/postgres/data
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      POSTGRES_HOST: railsdb
+      POSTGRES_USER: umeshkafle
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - railsdb
+    ports:
+      - "80:3000"
+volumes:
+  data0:
+    driver: local
